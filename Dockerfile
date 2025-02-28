@@ -5,9 +5,6 @@ WORKDIR /app
 COPY . .
 
 RUN python -m venv venv \
-    && . venv/bin/activate \
-    && pip install --no-cache-dir -r req.txt
-
-COPY . .
+    && venv/bin/pip install -r req.txt
 
 CMD ["sh", "-c", ". venv/bin/activate && python -m src.run"]
