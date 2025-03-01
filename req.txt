@@ -2,3 +2,4 @@ kafka-python==2.0.5
 websockets==15.0
 fastapi==0.115.9
 uvicorn[standard]==0.34.0
+python-dotenv==1.0.1

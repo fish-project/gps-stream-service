@@ -5,7 +5,7 @@ import time
 import json
 from kafka import KafkaProducer, KafkaConsumer
 import time
-from src.dependency.dependencyLoader import config
+import os
 
 async def stream_data(websocket: WebSocket, ship_id:str):
     await websocket.accept()
@@ -13,7 +13,7 @@ async def stream_data(websocket: WebSocket, ship_id:str):
     timestamp = int(time.time() * 1000)
 
     producer = KafkaProducer(
-        bootstrap_servers=config['kafka_host'],
+        bootstrap_servers=os.getenv("kafka_host"),
         key_serializer=lambda k: str(k).encode("utf-8"),
         value_serializer=lambda v: json.dumps(v).encode("utf-8")
     )
