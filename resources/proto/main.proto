@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package grpc;
+
+option java_multiple_files = true;
+option java_package = "src.grpcServer.gen";
+
+
+service ConfirmEmail {
+  rpc checkEmail (Request) returns (Response);
+}
+
+message Request {
+  string email = 1;
+  string shipid = 2;
+}
+
+message Response {
+  string mess = 1;
+}

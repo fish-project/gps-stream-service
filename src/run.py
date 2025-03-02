@@ -5,7 +5,17 @@ import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-env", help="Chỉ định file .env để load", type=str)
+parser.add_argument("--proto", action="store_true", help="biên dịch proto", required=False)
 args = parser.parse_args()
+
+env = ["kafka_host", "server_port", "grpc_host"]
+
+def env_load():
+    for item in env:
+        os.getenv(item)
+        if os.getenv(item) is None:
+            raise Exception(f"missing .env configuration: {item}")
+        print(f"Đã nạp biến môi trường: {item}={os.getenv(item)}")
 
 if __name__ == "__main__":
     try:
@@ -16,17 +26,14 @@ if __name__ == "__main__":
         else:
             print("Using existing environment variables")
 
-        kafka_host = os.getenv("kafka_host")
-        server_port = os.getenv("server_port")
-        
-        if(kafka_host is None or server_port is None):
-            raise Exception("missing .env configuration")
-        
-        print(f"kafka host: {kafka_host}")
-        print(f"server port: {server_port}\n")
+        env_load()
 
-        from src.dependency.dependencyLoader import *
+        if args.proto:
+            from .service.gen_proto import compile_proto
+            compile_proto()
+        else:
+            from src.dependency.dependencyLoader import *
 
-        uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("server_port")))
+            uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("server_port")))
     except Exception as e:
         print(f"fail to start program, msg: {str(e)}")

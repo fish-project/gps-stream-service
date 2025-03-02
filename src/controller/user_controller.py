@@ -7,7 +7,13 @@ from kafka import KafkaProducer, KafkaConsumer
 import time
 import os
 
-async def stream_data(websocket: WebSocket, ship_id:str):
+async def stream_data(websocket: WebSocket, ship_id:str, email:str):
+    from resources.proto.grpc_client import run
+    if not run(email, ship_id):
+        print("Từ chối kết nối")
+        await websocket.close()
+        return
+
     await websocket.accept()
     await websocket.send_text(f"Gửi dữ liệu từ client {ship_id}")
     timestamp = int(time.time() * 1000)
