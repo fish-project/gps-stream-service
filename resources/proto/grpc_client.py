@@ -12,6 +12,6 @@ def run(email:str, shipid:str):
         request = main_pb2.Request(email=email, shipid=shipid)
         response = stub.checkEmail(request)
 
-        print(f"📩 Phản hồi từ server: {response.mess}")
+        print(f"Phản hồi từ server: {response.mess}")
         return response.mess == "success"
     except: return False

@@ -9,6 +9,9 @@ router = APIRouter()
 
 @router.websocket("/stream/{ship_id}/{email}")
 async def get_user(websocket: WebSocket, ship_id:str, email:str):
+    print(email)
+    print(ship_id)
+    
     await stream_data(websocket, ship_id, email)
 
 @router.get("/stream/{ship_id}/{email}")
