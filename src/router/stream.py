@@ -17,7 +17,7 @@ async def get_user(websocket: WebSocket, ship_id:str, email:str):
 @router.get("/stream/{ship_id}/{email}")
 def stream_kafka_data(ship_id: str, email:str):
     from resources.proto.grpc_client import run
-    if (not run(email, ship_id)) || True:
+    if (not run(email, ship_id)) or True:
         raise HTTPException(status_code=403, detail="Từ chối kết nối")
         return
     return StreamingResponse(kafka_event_stream(ship_id), media_type="text/event-stream")
