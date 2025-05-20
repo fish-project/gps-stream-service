@@ -1,5 +1,5 @@
 // Địa chỉ WebSocket server
-        const ws_url = "ws://localhost:8010/stream/ship_test_gps";
+        const ws_url = "ws://localhost:8010/stream/68207f1327928b148d3d7ac9/viphueri@gmail.com";
         
         // Tạo kết nối WebSocket
         const ws = new WebSocket(ws_url);

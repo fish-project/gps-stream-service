@@ -9,10 +9,10 @@ import os
 
 async def stream_data(websocket: WebSocket, ship_id:str, email:str):
     from resources.proto.grpc_client import run
-    if not run(email, ship_id):
-        print("Từ chối kết nối")
-        await websocket.close()
-        return
+    # if not run(email, ship_id):
+    #     print("Từ chối kết nối")
+    #     await websocket.close()
+    #     return
 
     await websocket.accept()
     await websocket.send_text(f"Gửi dữ liệu từ client {ship_id}")
@@ -40,6 +40,7 @@ async def stream_data(websocket: WebSocket, ship_id:str, email:str):
                 })
                 
     except WebSocketDisconnect:
+        # TODO
         print("⚠️ Client đã ngắt kết nối")
     except Exception as e:
         print(str(e))

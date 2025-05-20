@@ -2,6 +2,11 @@ import uvicorn
 import argparse
 from dotenv import load_dotenv
 import os
+import threading
+import sys
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+from service.kafka_consumer import consume_and_save
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-env", help="Chỉ định file .env để load", type=str)
@@ -17,6 +22,14 @@ def env_load():
             raise Exception(f"missing .env configuration: {item}")
         print(f"Đã nạp biến môi trường: {item}={os.getenv(item)}")
 
+
+
+def start_consumer():
+    from service.kafka_consumer import consume_and_save
+    thread = threading.Thread(target=consume_and_save, daemon=True)
+    thread.start()
+
+
 if __name__ == "__main__":
     try:
         if args.env:
@@ -27,6 +40,8 @@ if __name__ == "__main__":
             print("Using existing environment variables")
 
         env_load()
+        #  # Start Kafka Consumer thread
+        start_consumer()
 
         if args.proto:
             from .service.gen_proto import compile_proto
